@@ -1,27 +1,38 @@
-import { createFileRoute, Link, notFound } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { ContentBlocks } from '@/components/organisms/ContentBlocks'
-import { getMaterial } from '@/content/materials'
+import { useMaterials } from '@/api/materials/useMaterials'
 import { formatDate } from '@/lib/utils'
 
 export const Route = createFileRoute('/materials/$slug')({
-  loader: ({ params }) => {
-    const material = getMaterial(params.slug)
-    if (!material) throw notFound()
-    return material
-  },
   component: MaterialDetail,
-  notFoundComponent: () => (
-    <div className="mx-auto w-full max-w-3xl px-6 py-24 text-center">
-      <p className="text-mist">Materi tidak ditemukan.</p>
-      <Link to="/materials" className="mt-4 inline-block text-surf">
-        ← Kembali ke semua materi
-      </Link>
-    </div>
-  ),
 })
 
 function MaterialDetail() {
-  const material = Route.useLoaderData()
+  const { slug } = Route.useParams()
+  const { data, isLoading, isError } = useMaterials()
+
+  if (isLoading) {
+    return (
+      <div className="mx-auto w-full max-w-3xl px-6 py-24 text-center text-mist">
+        Memuat materi…
+      </div>
+    )
+  }
+
+  const material = data?.find((m) => m.slug === slug)
+
+  if (isError || !material) {
+    return (
+      <div className="mx-auto w-full max-w-3xl px-6 py-24 text-center">
+        <p className="text-mist">
+          {isError ? 'Gagal memuat materi.' : 'Materi tidak ditemukan.'}
+        </p>
+        <Link to="/materials" className="mt-4 inline-block text-surf">
+          ← Kembali ke semua materi
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <article className="mx-auto w-full max-w-3xl px-6 py-16">
@@ -36,10 +47,10 @@ function MaterialDetail() {
           </span>
           <time dateTime={material.date}>{formatDate(material.date)}</time>
         </div>
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-foam">
+        <h1 className="mt-4 break-words text-3xl font-bold tracking-tight text-foam">
           {material.title}
         </h1>
-        <p className="mt-2 text-lg text-mist">{material.summary}</p>
+        <p className="mt-2 break-words text-lg text-mist">{material.summary}</p>
         {material.tags && material.tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
             {material.tags.map((tag) => (

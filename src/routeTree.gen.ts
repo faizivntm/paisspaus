@@ -14,6 +14,9 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MaterialsIndexRouteImport } from './routes/materials/index'
 import { Route as MaterialsSlugRouteImport } from './routes/materials/$slug'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as AdminCreate_materiRouteImport } from './routes/admin/create_materi'
+import { Route as AdminMaterialsNewRouteImport } from './routes/admin/materials/new'
 
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
@@ -40,49 +43,95 @@ const MaterialsSlugRoute = MaterialsSlugRouteImport.update({
   path: '/materials/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCreate_materiRoute = AdminCreate_materiRouteImport.update({
+  id: '/admin/create_materi',
+  path: '/admin/create_materi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMaterialsNewRoute = AdminMaterialsNewRouteImport.update({
+  id: '/admin/materials/new',
+  path: '/admin/materials/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/projects': typeof ProjectsRoute
+  '/admin/create_materi': typeof AdminCreate_materiRoute
+  '/admin/login': typeof AdminLoginRoute
   '/materials/$slug': typeof MaterialsSlugRoute
   '/materials/': typeof MaterialsIndexRoute
+  '/admin/materials/new': typeof AdminMaterialsNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/projects': typeof ProjectsRoute
+  '/admin/create_materi': typeof AdminCreate_materiRoute
+  '/admin/login': typeof AdminLoginRoute
   '/materials/$slug': typeof MaterialsSlugRoute
   '/materials': typeof MaterialsIndexRoute
+  '/admin/materials/new': typeof AdminMaterialsNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/projects': typeof ProjectsRoute
+  '/admin/create_materi': typeof AdminCreate_materiRoute
+  '/admin/login': typeof AdminLoginRoute
   '/materials/$slug': typeof MaterialsSlugRoute
   '/materials/': typeof MaterialsIndexRoute
+  '/admin/materials/new': typeof AdminMaterialsNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/projects' | '/materials/$slug' | '/materials/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/projects'
+    | '/admin/create_materi'
+    | '/admin/login'
+    | '/materials/$slug'
+    | '/materials/'
+    | '/admin/materials/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/projects' | '/materials/$slug' | '/materials'
+  to:
+    | '/'
+    | '/about'
+    | '/projects'
+    | '/admin/create_materi'
+    | '/admin/login'
+    | '/materials/$slug'
+    | '/materials'
+    | '/admin/materials/new'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/projects'
+    | '/admin/create_materi'
+    | '/admin/login'
     | '/materials/$slug'
     | '/materials/'
+    | '/admin/materials/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ProjectsRoute: typeof ProjectsRoute
+  AdminCreate_materiRoute: typeof AdminCreate_materiRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   MaterialsSlugRoute: typeof MaterialsSlugRoute
   MaterialsIndexRoute: typeof MaterialsIndexRoute
+  AdminMaterialsNewRoute: typeof AdminMaterialsNewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -122,6 +171,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MaterialsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/create_materi': {
+      id: '/admin/create_materi'
+      path: '/admin/create_materi'
+      fullPath: '/admin/create_materi'
+      preLoaderRoute: typeof AdminCreate_materiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/materials/new': {
+      id: '/admin/materials/new'
+      path: '/admin/materials/new'
+      fullPath: '/admin/materials/new'
+      preLoaderRoute: typeof AdminMaterialsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -129,8 +199,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ProjectsRoute: ProjectsRoute,
+  AdminCreate_materiRoute: AdminCreate_materiRoute,
+  AdminLoginRoute: AdminLoginRoute,
   MaterialsSlugRoute: MaterialsSlugRoute,
   MaterialsIndexRoute: MaterialsIndexRoute,
+  AdminMaterialsNewRoute: AdminMaterialsNewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

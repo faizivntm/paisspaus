@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { FaJava, FaPython, FaReact, FaJs } from 'react-icons/fa'
 import { SiTypescript, SiTailwindcss } from 'react-icons/si'
@@ -6,7 +7,7 @@ import { WhaleLogo } from '@/components/atoms/WhaleLogo'
 import { SectionHeading } from '@/components/molecules/SectionHeading'
 import { MaterialCard } from '@/components/molecules/MaterialCard'
 import { ProjectCard } from '@/components/molecules/ProjectCard'
-import { categories, sortedMaterials } from '@/content/materials'
+import { useMaterials } from '@/api/materials/useMaterials'
 import { sortedProjects } from '@/content/projects'
 
 export const Route = createFileRoute('/')({
@@ -24,8 +25,13 @@ const stack = [
 ]
 
 function Index() {
-  const latest = sortedMaterials().slice(0, 4)
-  const topics = categories()
+  const { data } = useMaterials()
+  const latest = (data ?? []).slice(0, 4)
+  const topics = useMemo(() => {
+    const count = new Map<string, number>()
+    for (const m of data ?? []) count.set(m.category, (count.get(m.category) ?? 0) + 1)
+    return [...count.entries()].map(([name, total]) => ({ name, total }))
+  }, [data])
   const works = sortedProjects().slice(0, 3)
 
   return (

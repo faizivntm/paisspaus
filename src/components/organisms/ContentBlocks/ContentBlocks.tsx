@@ -9,19 +9,19 @@ export function ContentBlocks({ blocks }: { blocks: Block[] }) {
         switch (block.type) {
           case 'heading':
             return (
-              <h2 key={i} className="text-xl font-bold text-foam">
+              <h2 key={i} className="break-words text-xl font-bold text-foam">
                 {block.text}
               </h2>
             )
           case 'paragraph':
             return (
-              <p key={i} className="leading-relaxed text-mist">
+              <p key={i} className="break-words leading-relaxed text-mist">
                 {block.text}
               </p>
             )
           case 'list':
             return (
-              <ul key={i} className="list-disc space-y-1 pl-6 text-mist marker:text-surf">
+              <ul key={i} className="list-disc space-y-1 break-words pl-6 text-mist marker:text-surf">
                 {block.items.map((item, j) => (
                   <li key={j}>{item}</li>
                 ))}
