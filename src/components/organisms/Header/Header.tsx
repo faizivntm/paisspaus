@@ -14,6 +14,7 @@ export function Header() {
         <nav className="flex gap-6 text-sm">
           <NavLink to="/">Home</NavLink>
           <NavLink to="/materials">Materi</NavLink>
+          <NavLink to="/projects">Let's Try</NavLink>
           <NavLink to="/about">About</NavLink>
         </nav>
       </div>

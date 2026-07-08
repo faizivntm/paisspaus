@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MaterialsIndexRouteImport } from './routes/materials/index'
 import { Route as MaterialsSlugRouteImport } from './routes/materials/$slug'
 
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -38,12 +44,14 @@ const MaterialsSlugRoute = MaterialsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/projects': typeof ProjectsRoute
   '/materials/$slug': typeof MaterialsSlugRoute
   '/materials/': typeof MaterialsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/projects': typeof ProjectsRoute
   '/materials/$slug': typeof MaterialsSlugRoute
   '/materials': typeof MaterialsIndexRoute
 }
@@ -51,26 +59,41 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/projects': typeof ProjectsRoute
   '/materials/$slug': typeof MaterialsSlugRoute
   '/materials/': typeof MaterialsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/materials/$slug' | '/materials/'
+  fullPaths: '/' | '/about' | '/projects' | '/materials/$slug' | '/materials/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/materials/$slug' | '/materials'
-  id: '__root__' | '/' | '/about' | '/materials/$slug' | '/materials/'
+  to: '/' | '/about' | '/projects' | '/materials/$slug' | '/materials'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/projects'
+    | '/materials/$slug'
+    | '/materials/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ProjectsRoute: typeof ProjectsRoute
   MaterialsSlugRoute: typeof MaterialsSlugRoute
   MaterialsIndexRoute: typeof MaterialsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -105,6 +128,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ProjectsRoute: ProjectsRoute,
   MaterialsSlugRoute: MaterialsSlugRoute,
   MaterialsIndexRoute: MaterialsIndexRoute,
 }

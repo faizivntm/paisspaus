@@ -6,6 +6,9 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Di GitHub Pages situs dilayani di /<nama-repo>/. Workflow mengisi VITE_BASE.
+  // Saat dev / hosting root, biarkan '/'.
+  base: process.env.VITE_BASE || '/',
   plugins: [
     tanstackRouter({
       target: 'react',

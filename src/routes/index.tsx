@@ -5,7 +5,9 @@ import { Button } from '@/components/atoms/Button'
 import { WhaleLogo } from '@/components/atoms/WhaleLogo'
 import { SectionHeading } from '@/components/molecules/SectionHeading'
 import { MaterialCard } from '@/components/molecules/MaterialCard'
+import { ProjectCard } from '@/components/molecules/ProjectCard'
 import { categories, sortedMaterials } from '@/content/materials'
+import { sortedProjects } from '@/content/projects'
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -24,6 +26,7 @@ const stack = [
 function Index() {
   const latest = sortedMaterials().slice(0, 4)
   const topics = categories()
+  const works = sortedProjects().slice(0, 3)
 
   return (
     <div className="mx-auto w-full max-w-6xl px-6">
@@ -91,7 +94,7 @@ function Index() {
       </section>
 
       {/* Latest: materi terbaru */}
-      <section className="py-10 pb-20">
+      <section className="py-10">
         <SectionHeading
           title="Fresh from the surface"
           subtitle="Materi & catatan terbaru dari kedalaman laut."
@@ -102,6 +105,29 @@ function Index() {
           ))}
         </div>
       </section>
+
+      {/* Karya: cuplikan repository */}
+      {works.length > 0 && (
+        <section className="py-10 pb-20">
+          <div className="flex items-end justify-between gap-4">
+            <SectionHeading
+              title="Lets try"
+              subtitle="Template & library open-source. Silakan dipakai dan dibagikan."
+            />
+            <Link
+              to="/projects"
+              className="shrink-0 text-sm font-medium text-surf hover:underline"
+            >
+              Lihat semua →
+            </Link>
+          </div>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {works.map((p) => (
+              <ProjectCard key={p.repo} project={p} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   )
 }
