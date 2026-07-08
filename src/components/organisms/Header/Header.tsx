@@ -29,7 +29,7 @@ export function Header() {
           <NavLink to="/about">About</NavLink>
         </nav>
 
-        {/* Tombol hamburger (mobile) */}
+        {/* Tombol hamburger (mobile) for header */}
         <button
           type="button"
           onClick={toggle}
